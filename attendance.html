@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<h2 style="text-align:center;">Student Attendance</h2>
+
+<form method="POST">
+
+<table>
+    <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Status</th>
+    </tr>
+
+    {% for student in students %}
+    <tr class="{% if student.status == 'Absent' %}absent{% else %}present{% endif %}">
+        
+        <td>{{ student.roll }}</td>
+        <td>{{ student.name }}</td>
+
+        <td>
+            <select name="status_{{ student.roll }}">
+                <option value="Present" {% if student.status == 'Present' %}selected{% endif %}>Present</option>
+                <option value="Absent" {% if student.status == 'Absent' %}selected{% endif %}>Absent</option>
+            </select>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+<button type="submit">Save Attendance</button>
+
+</form>
+
+<script>
+document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("change", function() {
+        let row = this.closest("tr");
+        
+        if (this.value === "Absent") {
+            row.classList.add("absent");
+            row.classList.remove("present");
+        } else {
+            row.classList.add("present");
+            row.classList.remove("absent");
+        }
+    });
+});
+</script>
+
+</body>
+</html>
